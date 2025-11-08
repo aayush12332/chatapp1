@@ -33,7 +33,7 @@ app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
 
 // ✅ Correct path to Vite build folder ("dist")
-const buildPath = path.join(__dirname, "Frontend", "dist");
+const buildPath = path.join(__dirname, "frontend", "dist");
 
 // ✅ Serve static files from dist
 app.use(express.static(buildPath));
