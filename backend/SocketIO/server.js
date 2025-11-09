@@ -4,35 +4,42 @@ import express from "express";
 
 const app = express();
 
+// Create HTTP server
 const server = http.createServer(app);
+
+// Create Socket.IO server with correct CORS
 const io = new Server(server, {
   cors: {
-    origin: "https://chatapp1-kq72.onrender.com",
+    origin: "https://chatapp1-kq72.onrender.com", // ✅ your final deployed URL
     methods: ["GET", "POST"],
   },
 });
 
-// realtime message code goes here
+const users = {}; // store online users with socket.id
+
+// export function to get receiver socket id
 export const getReceiverSocketId = (receiverId) => {
   return users[receiverId];
 };
 
-const users = {};
-
-// used to listen events on server side.
+// Socket.IO server events
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
+  console.log("✅ User connected:", socket.id);
+
   const userId = socket.handshake.query.userId;
+
+  // If userId is provided, save socket id
   if (userId) {
     users[userId] = socket.id;
-    console.log("Hello ", users);
+    console.log("✅ Online Users:", users);
   }
-  // used to send the events to all connected users
+
+  // Send updated online users list
   io.emit("getOnlineUsers", Object.keys(users));
 
-  // used to listen client side events emitted by server side (server & client)
+  // User disconnect event
   socket.on("disconnect", () => {
-    console.log("a user disconnected", socket.id);
+    console.log("❌ User disconnected:", socket.id);
     delete users[userId];
     io.emit("getOnlineUsers", Object.keys(users));
   });
