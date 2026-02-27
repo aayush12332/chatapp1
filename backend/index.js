@@ -24,7 +24,7 @@ const __dirname = path.resolve();
 
 // ✅ Connect to MongoDB
 mongoose
-  .connect(mongodb+srv://aayushsurpatidar100_db_user:uhQugGd5HYzLNgP5@cluster0.1nmdbkq.mongodb.net/)
+  .connect(URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.log(err));
 
